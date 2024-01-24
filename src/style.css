@@ -1,0 +1,43 @@
+/* Reset/default styles and global variables */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  /* Color variables */
+  --surface: white;
+  --onSurface: rgba(0, 0, 0, 1);
+  --onSurfaceMedium: rgba(0, 0, 0, 0.6);
+  --onSurfaceLow: rgba(0, 0, 0, 0.48);
+  --primary: #8a4300;
+  --primaryContainer: #f08200;
+}
+
+body {
+  padding: 1rem;
+  font-family: system-ui, Inter, sans-serif;
+  color: var(--onSurface);
+}
+
+input[type="search"]::-webkit-search-decoration,
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-results-button,
+input[type="search"]::-webkit-search-results-decoration {
+  -webkit-appearance: none;
+}
+
+/* Utilities classes */
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
