@@ -139,9 +139,10 @@ type TMenuItem = {
   className?: HTMLProps<HTMLElement>['className']
   style?: CSSProperties
   index: number
+  onClick?: () => void
 }
 
-function MenuItem({ children, index, className, style }: TMenuItem) {
+function MenuItem({ children, index, className, style, onClick }: TMenuItem) {
   const { selectedIndex, handleSelection } = useComboboxContext()
 
   return (
@@ -149,6 +150,7 @@ function MenuItem({ children, index, className, style }: TMenuItem) {
       onMouseEnter={() => handleSelection(index)}
       className={className}
       style={style}
+      onClick={() => onClick?.()}
       data-selected={index === selectedIndex}
     >
       {children}

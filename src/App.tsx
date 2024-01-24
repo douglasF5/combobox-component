@@ -13,27 +13,35 @@ const list = [
   "Ocean's eleven",
 ]
 
+const URL = 'https://f2e35394-7411-45e2-b5c3-ed23ec39b671.mock.pstmn.io'
+
 function App() {
   const [inputValue, setInputValue] = useState('')
   const [filteredList, setFilteredList] = useState<string[]>([])
 
-  function handleFilterList() {
-    if (inputValue === '') {
-      setFilteredList([])
-      return
+  useEffect(() => {
+    function fetchData() {
+      fetch(URL).then(v => v.json()).then(a => console.log(a))
     }
 
-    const regex = new RegExp(inputValue.trim(), 'gi')
-    const newList = list.filter((item) => regex.test(item))
-
-    setFilteredList(newList)
-  }
-
-  function handleInputOnChange(newValue: string) {
-    setInputValue(newValue)
-  }
+    fetchData()
+  }, [])
 
   useEffect(() => {
+    function handleFilterList() {
+      if (inputValue === '') {
+        setFilteredList([])
+        return
+      }
+
+      const regex = new RegExp(inputValue.trim(), 'gi')
+      const newList = list.filter((item) => {
+        return regex.test(item) && !(item === inputValue)
+      })
+
+      setFilteredList(newList)
+    }
+
     handleFilterList()
   }, [inputValue])
 
@@ -42,21 +50,28 @@ function App() {
       <h1>Input field with auto complete</h1>
       <br />
 
-      <Combobox.Root listLength={filteredList.length} className='rootContainer'>
+      {/* Root component */}
+      <Combobox.Root
+        listLength={filteredList.length}
+        className='rootContainer'
+      >
+        {/* Left icon */}
         <div className='iconSlot'><MagnifyingGlassIcon size='20' /></div>
 
+        {/* Input field */}
         <Combobox.Input
           className="inputField"
           value={inputValue}
-          onChange={(value) => handleInputOnChange(value)}
+          onChange={(value) => setInputValue(value)}
           placeholder="Search..."
         />
 
+        {/* Clear button */}
         {inputValue && (
           <div className='clearButtonSlot'>
             <button
               className='clearFieldButton'
-              onClick={() => handleInputOnChange('')}
+              onClick={() => setInputValue('')}
             >
               <span className='srOnly'>Clear field</span>
               <CrossCircled size='20' />
@@ -64,10 +79,16 @@ function App() {
           </div>
         )}
 
+        {/* Dropdown menu */}
         <Combobox.DropdownMenu className='menuContainer'>
           {filteredList.map((item, idx) => {
             return (
-              <Combobox.MenuItem key={idx} className="menuItem" index={idx}>
+              <Combobox.MenuItem
+                key={idx}
+                className="menuItem"
+                index={idx}
+                onClick={() => setInputValue(item)}
+              >
                 <p>
                   <TextMatchHighlight
                     highlightText={inputValue}
